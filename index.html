@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absensi Keren</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .form {
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            width: 70%;
+            font-size: 1rem;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background: #28a745;
+            color: white;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #218838;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid white;
+        }
+
+        th {
+            background-color: #333;
+        }
+
+        tbody tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Absensi</h1>
+
+        <!-- Error message display -->
+        <div class="error" id="errorMessage"></div>
+
+        <!-- Form to input name -->
+        <div class="form">
+            <input type="text" id="nameInput" placeholder="Masukkan nama..." required />
+            <button onclick="addAttendance()">Absen</button>
+        </div>
+
+        <!-- Attendance table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Waktu</th>
+                </tr>
+            </thead>
+            <tbody id="attendanceList"></tbody>
+        </table>
+    </div>
+
+    <script>
+        // Attendance list array to hold the attendance data
+        let attendanceData = [];
+
+        // Function to add attendance
+        function addAttendance() {
+            const nameInput = document.getElementById("nameInput");
+            const errorMessage = document.getElementById("errorMessage");
+            const name = nameInput.value.trim();
+
+            // Check if the name input is empty
+            if (name === "") {
+                errorMessage.textContent = "Nama tidak boleh kosong!";
+                return;
+            } else {
+                errorMessage.textContent = "";  // Clear any previous error message
+            }
+
+            // Get the current time
+            const time = new Date().toLocaleString();
+
+            // Add the attendance data to the array
+            attendanceData.push({ name, time });
+
+            // Update the table display
+            displayAttendance();
+
+            // Clear the input field
+            nameInput.value = "";
+        }
+
+        // Function to display attendance data in the table
+        function displayAttendance() {
+            const attendanceList = document.getElementById("attendanceList");
+            attendanceList.innerHTML = "";  // Clear the existing list
+
+            // Loop through the attendance data and add rows to the table
+            attendanceData.forEach((data, index) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${data.name}</td>
+                    <td>${data.time}</td>
+                `;
+                attendanceList.appendChild(row);
+            });
+        }
+    </script>
+</body>
+</html>
